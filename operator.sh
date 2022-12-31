@@ -8,18 +8,20 @@ echo "SRCDS Server Operator Started"
 echo "Checking newer version of app id $1, current version = $2"
 
 APP_ID=$1
-CURRENT_VERSION="\"$2\""
+CURRENT_VERSION="$2"
 SERVER_CONTAINER_PREFIX=$3
 
 SLEEP_DURATION=5m
 SLEEP_BEFORE_UPDATE=5m
+IMAGE_PATH=~/buildtest
+IMAGE_NAME=fof_server
 
 NEED_TO_UPDATE=false
 
 # Query until find new update
 while ! $NEED_TO_UPDATE; do
   echo "Querying new version..."
-  LAST_VERSION=$(curl https://api.steamcmd.net/v1/info/$1 | jq ".data[\"$1\"].depots.branches.public.buildid")
+  LAST_VERSION=$(curl https://api.steamcmd.net/v1/info/$1 | jq ".data[\"$1\"].depots.branches.public.buildid" | tr -d '"')
   echo "New version = $LAST_VERSION"
   if [ ${#LAST_VERSION} -le 10 ] && [ $LAST_VERSION != $CURRENT_VERSION ]; then
     NEED_TO_UPDATE=true
@@ -38,10 +40,13 @@ sleep $SLEEP_BEFORE_UPDATE
 
 # Stop and remove all container
 CONTAINER_LIST=$(podman ps -a --format="{{.Names}}")
-$CONTAINER_LIST | xargs podman stop
-$CONTAINER_LIST | xargs podman rm
+echo $CONTAINER_LIST | xargs podman stop
+echo $CONTAINER_LIST | xargs podman rm
 
 # Perform update image
+pushd $IMAGE_PATH
+podman build -t fof_server:latest .
+podman build -t fof_server:$LAST_VERSION .
 
 # Start all container
-
+sh -c ./start_all_container.sh

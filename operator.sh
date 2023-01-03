@@ -14,7 +14,7 @@ SERVER_CONTAINER_PREFIX=$3
 
 SLEEP_DURATION=5m
 SLEEP_BEFORE_UPDATE=1m
-IMAGE_PATH=/app/build
+IMAGE_PATH=/home/core/buildtest
 IMAGE_NAME=fof_server
 
 while true; do
@@ -61,14 +61,14 @@ echo "Stopping all servers..."
 # Perform update image
 echo "Performing update image..."
 pushd $IMAGE_PATH
-$podman build -t fof_server:latest .
-$podman build -t fof_server:$LAST_VERSION .
+$podman build -t fof_server:latest $IMAGE_PATH
+$podman build -t fof_server:$LAST_VERSION $IMAGE_PATH
 popd
 
 # Run all container
 echo "Run all server back!"
 pushd $IMAGE_PATH
-$(dirs +1)/run_all_server.sh /home/core/buildtest
+$(dirs +1)/run_all_server.sh $IMAGE_PATH
 popd
 
 CURRENT_VERSION=$LAST_VERSION

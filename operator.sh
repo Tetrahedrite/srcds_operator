@@ -7,7 +7,6 @@ export podman="/usr/bin/podman --remote "
 
 echo "SRCDS Server Operator Started"
 
-echo "Checking newer version of app id $1, current version = $2"
 
 APP_ID=$1
 CURRENT_VERSION="$2"
@@ -19,6 +18,7 @@ IMAGE_PATH=/app/build
 IMAGE_NAME=fof_server
 
 while true; do
+echo "Checking newer version of app id $APP_ID, current version = $CURRENT_VERSION"
 NEED_TO_UPDATE=false
 # Query until find new update
 while ! $NEED_TO_UPDATE; do

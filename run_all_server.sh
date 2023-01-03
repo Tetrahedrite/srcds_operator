@@ -12,9 +12,10 @@ SET_COMMON_ARGS="COMMON_ARGS=\" \
 -v $1/\$SERVER_NAME/addons:/app/fof/addons:Z \
 -v $1/\$SERVER_NAME/cfg:/app/fof/cfg:Z \
 -v $1/\$SERVER_NAME/MOTD.txt:/app/fof/MOTD.txt:Z \
+-e APP_ID=\${APP_ID:-295230} \
 -e PORT=\$((27015 + \$SERVER_NUMBER)) \
 -e SPORT=\$((27015 + \$SERVER_NUMBER)) \
--e MAXPLAYERS=\$MAXPLAYERS \
+-e MAXPLAYERS=\${MAXPLAYERS:-24} \
 \""
 
 # 4팀 슛아웃

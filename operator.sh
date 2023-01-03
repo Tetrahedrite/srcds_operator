@@ -62,7 +62,7 @@ echo "Stopping all servers..."
 echo "Performing update image..."
 pushd $IMAGE_PATH
 $podman build -t fof_server:latest $IMAGE_PATH
-$podman build -t fof_server:$LAST_VERSION $IMAGE_PATH
+$podman build -t fof_server:$(echo $LAST_VERSION | tr -d '"') $IMAGE_PATH
 popd
 
 # Run all container

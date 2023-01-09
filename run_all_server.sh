@@ -16,6 +16,7 @@ SET_COMMON_ARGS="COMMON_ARGS=\" \
 -e PORT=\$((27015 + \$SERVER_NUMBER)) \
 -e SPORT=\$((27015 + \$SERVER_NUMBER)) \
 -e MAXPLAYERS=\${MAXPLAYERS:-24} \
+--net=slirp4netns:port_handler=slirp4netns \
 \""
 
 # 4팀 슛아웃

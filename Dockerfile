@@ -1,6 +1,6 @@
-FROM alpine:3
+FROM node:19-alpine
 
-RUN apk add --no-cache bash curl jq podman nodejs npm
+RUN apk add --no-cache bash curl jq podman 
 
 WORKDIR /app
 
